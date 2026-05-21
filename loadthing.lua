@@ -49,6 +49,9 @@ local AlertRemoteClient = CL_MAIN_GameScript:FindFirstChild("Alert") :: Bindable
 local DoMapVote = CL_MAIN_GameScript:FindFirstChild("DoMapVote") :: BindableEvent
 local NewMapVote = RemoteFolderSecond:FindFirstChild("NewMapVote") :: RemoteEvent
 
+local AutoVotePublicID = Instance.new("NumberValue", game.ReplicatedStorage)
+AutoVotePublicID.Name = "AutoVotePublicID"
+
 local MapsToVote = {}
 
 local BlacklistedMaps = {
@@ -366,18 +369,18 @@ _G.LoopCancel = false
 Alert("[SYSTEM] AutoFarm Active.", "Success")
 
 task.spawn(function()
-    while task.wait(1) do
-        if _G.LoopCancel == true then break end
-        
-        if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-            local inLift = Check("InLift")
-            local inGame = Check("InGame")
+	while task.wait(1) do
+		if _G.LoopCancel == true then break end
 
-            if not inLift and not inGame and getgenv().TomatoAutoFarm then
-                AddedWaiting:FireServer()
-            end
-        end
-    end
+		if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+			local inLift = Check("InLift")
+			local inGame = Check("InGame")
+
+			if not inLift and not inGame and getgenv().TomatoAutoFarm then
+				AddedWaiting:FireServer()
+			end
+		end
+	end
 end)
 
 NewMapVote.OnClientEvent:Connect(function(NewMapData)
@@ -396,6 +399,7 @@ NewMapVote.OnClientEvent:Connect(function(NewMapData)
 		local ChosenMapInfo = MapsToVote[math.random(1, #MapsToVote)]
 		DoMapVote:Fire(ChosenMapInfo.ID, 0)
 		AlertRemoteClient:Fire(string.format("Auto-voted for: %s", ChosenMapInfo.name), Color3.fromRGB(0, 255, 0), 10, nil, nil, true)
+		AutoVotePublicID.Value = ChosenMapInfo.ID
 		task.delay(0.1, function()
 			VotingFrame.ConfirmVote.Text = "Auto Voted"
 		end)

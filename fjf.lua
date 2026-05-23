@@ -323,7 +323,7 @@ RemoteFolder.StartClientMapTimer.OnClientEvent:Connect(function()
 				if VotePublicID then
 					task.delay(0.1, function() -- delay just in case
 						print("fired, if doesnt work then wrong cost")
-						CL_MAIN_GameScript.DoMapVote:Fire(VotePublicID.Value, 10) -- i think 10 because first vote is free and second one costs 10 coins
+						CL_MAIN_GameScript.UpdMapVote:Fire(VotePublicID.Value, 10) -- i think 10 because first vote is free and second one costs 10 coins
 						AmountProgressed += 1
 					end)
 				end

@@ -209,6 +209,8 @@ local ChallengeData = {
 }
 
 function CreateCurrentChallengeData()
+	CurrentChallengeData.standard = {}
+	CurrentChallengeData.master = {}
 	local CurrData = DataRemote:Invoke().dailyChallenges
 	for _, CurrChallenge in pairs(CurrData.standard) do
 		for _, Challenge in pairs(ChallengeData) do

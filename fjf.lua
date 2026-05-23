@@ -236,13 +236,39 @@ function CreateCurrentChallengeData()
 	end
 end
 
+local function tableToString(tbl, indent)
+	indent = indent or 0
+	local formatting = string.rep("    ", indent)
+	local result = "{\n"
+	for k, v in pairs(tbl) do
+		local key
+		if type(k) == "string" then
+			key = '["' .. k .. '"]'
+		else
+			key = "[" .. tostring(k) .. "]"
+		end
+		if type(v) == "table" then
+			result ..= formatting .. "    " .. key .. " = "
+			result ..= tableToString(v, indent + 1)
+			result ..= ",\n"
+		else
+			local value
+			if type(v) == "string" then
+				value = '"' .. v .. '"'
+			else
+				value = tostring(v)
+			end
+			result ..= formatting .. "    " .. key .. " = " .. value .. ",\n"
+		end
+	end
+	result ..= formatting .. "}"
+	return result
+end
+
 function RemoveCompletedChallenges()
+	print(tableToString(CurrentChallengeData))
 	if #CurrentChallengeData.standard ~= 0 then
-		for ChallengeIndex = 1, #CurrentChallengeData.standard do
-			print(CurrentChallengeData.standard[ChallengeIndex])
-			print(CurrentChallengeData.standard[ChallengeIndex].ID)
-			print(CurrentChallengeData.standard[ChallengeIndex].AmountRequired)
-			print(CurrentChallengeData.standard[ChallengeIndex].AmountCurrent)
+		for ChallengeIndex = 1, #CurrentChallengeData.standard do	
 			if CurrentChallengeData.standard[ChallengeIndex].AmountCurrent >= CurrentChallengeData.standard[ChallengeIndex].AmountRequired then
 				table.remove(CurrentChallengeData.standard, ChallengeIndex)
 			end

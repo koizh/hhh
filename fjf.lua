@@ -239,6 +239,10 @@ end
 function RemoveCompletedChallenges()
 	if #CurrentChallengeData.standard ~= 0 then
 		for ChallengeIndex = 1, #CurrentChallengeData.standard do
+			print(CurrentChallengeData.standard[ChallengeIndex])
+			print(CurrentChallengeData.standard[ChallengeIndex].ID)
+			print(CurrentChallengeData.standard[ChallengeIndex].AmountRequired)
+			print(CurrentChallengeData.standard[ChallengeIndex].AmountCurrent)
 			if CurrentChallengeData.standard[ChallengeIndex].AmountCurrent >= CurrentChallengeData.standard[ChallengeIndex].AmountRequired then
 				table.remove(CurrentChallengeData.standard, ChallengeIndex)
 			end

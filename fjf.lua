@@ -266,25 +266,25 @@ local function tableToString(tbl, indent)
 end
 
 function RemoveCompletedChallenges()
-    -- Remove completed standard challenges
-    local i = #CurrentChallengeData.standard
-    while i >= 1 do
-        local challenge = CurrentChallengeData.standard[i]
-        if challenge and challenge.AmountCurrent >= challenge.AmountRequired then
-            table.remove(CurrentChallengeData.standard, i)
-        end
-        i = i - 1
-    end
+	-- Remove completed standard challenges
+	local i = #CurrentChallengeData.standard
+	while i >= 1 do
+		local challenge = CurrentChallengeData.standard[i]
+		if challenge and challenge.AmountCurrent >= challenge.AmountRequired then
+			table.remove(CurrentChallengeData.standard, i)
+		end
+		i = i - 1
+	end
 
-    -- Remove completed master challenges
-    local i = #CurrentChallengeData.master
-    while i >= 1 do
-        local challenge = CurrentChallengeData.master[i]
-        if challenge and challenge.AmountCurrent >= challenge.AmountRequired then
-            table.remove(CurrentChallengeData.master, i)
-        end
-        i = i - 1
-    end
+	-- Remove completed master challenges
+	local i = #CurrentChallengeData.master
+	while i >= 1 do
+		local challenge = CurrentChallengeData.master[i]
+		if challenge and challenge.AmountCurrent >= challenge.AmountRequired then
+			table.remove(CurrentChallengeData.master, i)
+		end
+		i = i - 1
+	end
 end
 
 RemoteFolder.Alert.OnClientEvent:Connect(function(Text : string)
@@ -322,6 +322,7 @@ RemoteFolder.StartClientMapTimer.OnClientEvent:Connect(function()
 				local VotePublicID = ReplicatedStorage:FindFirstChild("AutoVotePublicID")
 				if VotePublicID then
 					task.delay(0.1, function() -- delay just in case
+						print("fired, if doesnt work then wrong cost")
 						CL_MAIN_GameScript.DoMapVote:Fire(VotePublicID.Value, 10) -- i think 10 because first vote is free and second one costs 10 coins
 						AmountProgressed += 1
 					end)
@@ -331,7 +332,8 @@ RemoteFolder.StartClientMapTimer.OnClientEvent:Connect(function()
 				for _, Inst in pairs(CurrentMap:GetDescendants()) do
 					if Inst.Name == "AirTank" then
 						task.wait(0.03)
-						Player.Character.HumanoidRootPart.CFrame = Inst.Hitbox.CFrame
+						local any = Inst:FindFirstChildOfClass("BasePart")
+						Player.Character.HumanoidRootPart.CFrame = any.CFrame
 						AmountProgressed += 1
 						break
 					end
@@ -385,7 +387,8 @@ RemoteFolder.StartClientMapTimer.OnClientEvent:Connect(function()
 					for _, Inst in pairs(CurrentMap:GetDescendants()) do
 						if Inst.Name == "AirTank" then
 							task.wait(0.03)
-							Player.Character.HumanoidRootPart.CFrame = Inst.Hitbox.CFrame
+							local any = Inst:FindFirstChildOfClass("BasePart")
+							Player.Character.HumanoidRootPart.CFrame = any.CFrame
 							AmountProgressed += 1
 							break
 						end

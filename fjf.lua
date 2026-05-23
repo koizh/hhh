@@ -270,16 +270,17 @@ RemoteFolder.StartClientMapTimer.OnClientEvent:Connect(function()
 		local MapDifficulty = math.floor(CurrentMap.Settings:GetAttribute("Difficulty"))
 		for _, ChallengeInfo in pairs(CurrentChallengeData.standard) do
 			local ID = ChallengeInfo.ID
-			if ID == 13 then -- ride ziplines (1 per map)
+			--[[if ID == 13 then -- ride ziplines (1 per map)
 				for _, Inst in pairs(CurrentMap:GetDescendants()) do
 					if Inst.Name == "RopeStart" then
 						task.wait(0.02)
-						Player.Character.HumanoidRootPart.CFrame = Inst.CFrame -- only way to get this one to work is by teleporting player to zipline, cant fake pos like sliding one :(
+						--Player.Character.HumanoidRootPart.CFrame = Inst.CFrame -- only way to get this one to work is by teleporting player to zipline, cant fake pos like sliding one :(
+						RemoteFolder.Challenges.RideZipline:FireServer(Inst)
 						AmountProgressed += 1
 						break
 					end
 				end
-			end
+			end]]
 			if ID == 15 then -- boost the game intensity
 				RemoteFolder.BoostIntensity:FireServer()
 			end
@@ -336,7 +337,7 @@ RemoteFolder.StartClientMapTimer.OnClientEvent:Connect(function()
 		if #CurrentChallengeData.standard == 0 then -- if standard challenges are completed, master challenges go here
 			for _, ChallengeInfo in pairs(CurrentChallengeData.master) do
 				local ID = ChallengeInfo.ID
-				if ID == 13 then -- ride ziplines (1 per map)
+				--[[if ID == 13 then -- ride ziplines (1 per map)
 					for _, Inst in pairs(CurrentMap:GetDescendants()) do
 						if Inst.Name == "RopeStart" then
 							task.wait(0.02)
@@ -345,7 +346,7 @@ RemoteFolder.StartClientMapTimer.OnClientEvent:Connect(function()
 							break
 						end
 					end
-				end
+				end]]
 				if ID == 21 then -- get airbubbles (1 per map if has it)
 					for _, Inst in pairs(CurrentMap:GetDescendants()) do
 						if Inst.Name == "AirTank" then

@@ -266,21 +266,25 @@ local function tableToString(tbl, indent)
 end
 
 function RemoveCompletedChallenges()
-	print(tableToString(CurrentChallengeData))
-	if #CurrentChallengeData.standard ~= 0 then
-		for ChallengeIndex = 1, #CurrentChallengeData.standard do	
-			if CurrentChallengeData.standard[ChallengeIndex].AmountCurrent >= CurrentChallengeData.standard[ChallengeIndex].AmountRequired then
-				table.remove(CurrentChallengeData.standard, ChallengeIndex)
-			end
-		end
-	end
-	if #CurrentChallengeData.master ~= 0 then
-		for ChallengeIndex = 1, #CurrentChallengeData.master do
-			if CurrentChallengeData.master[ChallengeIndex].AmountCurrent >= CurrentChallengeData.master[ChallengeIndex].AmountRequired then
-				table.remove(CurrentChallengeData.master, ChallengeIndex)
-			end
-		end
-	end
+    -- Remove completed standard challenges
+    local i = #CurrentChallengeData.standard
+    while i >= 1 do
+        local challenge = CurrentChallengeData.standard[i]
+        if challenge and challenge.AmountCurrent >= challenge.AmountRequired then
+            table.remove(CurrentChallengeData.standard, i)
+        end
+        i = i - 1
+    end
+
+    -- Remove completed master challenges
+    local i = #CurrentChallengeData.master
+    while i >= 1 do
+        local challenge = CurrentChallengeData.master[i]
+        if challenge and challenge.AmountCurrent >= challenge.AmountRequired then
+            table.remove(CurrentChallengeData.master, i)
+        end
+        i = i - 1
+    end
 end
 
 RemoteFolder.Alert.OnClientEvent:Connect(function(Text : string)
